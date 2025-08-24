@@ -1,7 +1,7 @@
 import logging
 import argparse
 from pyspark.sql import SparkSession
-from plugins.filename_to_date import get_filename_with_date 
+from plugins.spark_helpers.utils.filename_to_date import get_filename_with_date 
 
 # กำหนดค่า logging เพื่อให้แสดงผลทันที
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -21,7 +21,7 @@ def load_data(read_path: str, save_path: str):
         file_path = get_filename_with_date(save_path, 'output')
         
         # รวมเป็น 1 task
-        df = df.repartition(1)
+        # df = df.repartition(1)
 
         df.write.mode("overwrite").csv(file_path)
         logging.info("Data loaded successfully.")

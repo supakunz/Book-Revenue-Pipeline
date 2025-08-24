@@ -19,12 +19,11 @@ def transform(read_path: str, save_path: str):
         # สร้าง column THB และ ลบ column ไม่ต้องการ
         df = df.withColumn( "thb_price", round(col("price") * col("conversion_rate"), 2))
         df = df.drop("date","id")
+        logging.info("Data transformed successfully.")
 
-        # แสดง Schema
+        # แสดง Schema และ 5 row
         df.printSchema()
-    
-        # แบ่งงานเป็น 16 task
-        df = df.repartition(16)
+        df.show(5)
 
         # save ลงไฟล์
         df.write.mode("overwrite").parquet(f"{save_path}/transform")

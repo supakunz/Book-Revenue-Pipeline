@@ -1,6 +1,6 @@
 import argparse
 from pyspark.sql import SparkSession, DataFrame
-from dags.spark_jobs.transform.data_clean_utils import handle_missing_values, remove_invalid_rows, re_price_name
+from plugins.spark_helpers.utils.data_clean_utils import handle_missing_values
 import logging
 
 # ตั้งค่า logging เพื่อบันทึกข้อผิดพลาด
@@ -22,9 +22,6 @@ def handle_missing(file_name: str, read_path: str, save_path: str) -> DataFrame:
         
         # แสดง Schema
         df.printSchema()
-
-        # แบ่งงานเป็น 16 task
-        df = df.repartition(16)
 
         # save ลงไฟล์
         df.write.mode("overwrite").parquet(f"{save_path}/handle_missing")

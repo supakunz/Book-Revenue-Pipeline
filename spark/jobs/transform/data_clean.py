@@ -34,9 +34,6 @@ def clean_data(source: str, read_path: str, save_path: str, file_name: str):
         # ตั้งชื่อไฟล์
         filename = f"{save_path}/{source}_cleaned"
         
-        # แบ่งงานหลาย task ลด memory ต่อ executor
-        # df = df.repartition(16)
-        
         # บันทึกลงไฟล์แบบ Parquet
         df.write.mode("overwrite").parquet(filename)
         logging.info(f"Data saved to {filename} successfully.")    

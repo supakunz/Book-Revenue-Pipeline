@@ -21,6 +21,11 @@ paths:
       transform:
         data_clean: "/opt/spark/jobs/transform/data_clean.py"
         join_table: "/opt/spark/jobs/transform/join_table.py"
+        handle_missing: "/opt/spark/jobs/transform/handle_missing.py"
+        handle_missing_final: "/opt/spark/jobs/transform/handle_missing_final.py"
+        transform: "/opt/spark/jobs/transform/transform.py"
+      load:
+        load_data: "/opt/spark/jobs/load/load_data.py"
 
 api:
   local:

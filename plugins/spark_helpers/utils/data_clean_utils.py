@@ -21,8 +21,8 @@ def cast_column_types(source: str,df: DataFrame) -> DataFrame:
     """
     if source == "data_from_db":
       return (
-            df.withColumn("timestamp", to_timestamp("timestamp", "d/M/yyyy H:mm"))
-            .withColumnRenamed("total_no._of_ratings", "total_rating_count")
+            df.withColumn("timestamp", to_timestamp("timestamp", "yyyy/MM/dd HH:mm:ss"))
+            .withColumnRenamed("total_no._of_rating", "total_rating_count")
             .withColumn("date", to_date(col("timestamp")))
       )
     

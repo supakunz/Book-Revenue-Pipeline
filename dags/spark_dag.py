@@ -23,79 +23,79 @@ with DAG(
     default_args={'owner': 'airflow'}
 ) as dag:
 
-    # extract_from_api = SparkSubmitOperator(
-    #     task_id="extract_from_api",
-    #     application= cfg["paths"]["airflow"]["spark_jobs"]["extract"]["extract_from_api"], # path ของ Spark job
-    #     conn_id="spark_default", # ชื่อ spark connection ที่เชือมกับ Airflow
-    #     conf= spark_conf,
-    #     packages="org.apache.hadoop:hadoop-aws:3.3.4,com.amazonaws:aws-java-sdk-bundle:1.12.367,io.delta:delta-core_2.12:2.4.0",
-    #     application_args=[
-    #         "--url", cfg["api"]["airflow"]["url"],
-    #         "--save_path", cfg["paths"]["airflow"]["raw"]["api_file"]["api_path"],
-    #         "--file_name", cfg["paths"]["airflow"]["raw"]["api_file"]["api_file_name"]
-    # ],
-    #     verbose=True, # ให้แสดง log
-    #     execution_timeout=timedelta(minutes=60),
-    #     retries=3, # ให้ retry 3 ครั้ง
-    #     retry_delay=timedelta(minutes=3) # ให้ delay 3 นาที ก่อน retry
-    # )
+    extract_from_api = SparkSubmitOperator(
+        task_id="extract_from_api",
+        application= cfg["paths"]["airflow"]["spark_jobs"]["extract"]["extract_from_api"], # path ของ Spark job
+        conn_id="spark_default", # ชื่อ spark connection ที่เชือมกับ Airflow
+        conf= spark_conf,
+        packages="org.apache.hadoop:hadoop-aws:3.3.4,com.amazonaws:aws-java-sdk-bundle:1.12.367,io.delta:delta-core_2.12:2.4.0",
+        application_args=[
+            "--url", cfg["api"]["airflow"]["url"],
+            "--save_path", cfg["paths"]["airflow"]["raw"]["api_file"]["api_path"],
+            "--file_name", cfg["paths"]["airflow"]["raw"]["api_file"]["api_file_name"]
+    ],
+        verbose=True, # ให้แสดง log
+        execution_timeout=timedelta(minutes=60),
+        retries=3, # ให้ retry 3 ครั้ง
+        retry_delay=timedelta(minutes=3) # ให้ delay 3 นาที ก่อน retry
+    )
 
-    # extract_from_db = SparkSubmitOperator(
-    #     task_id="extract_from_db",
-    #     application= cfg["paths"]["airflow"]["spark_jobs"]["extract"]["extract_from_db"], # path ของ Spark job
-    #     conn_id="spark_default", # ชื่อ spark connection ที่เชือมกับ Airflow
-    #     conf= spark_conf,
-    #     packages=(""
-    #         "org.apache.hadoop:hadoop-aws:3.3.4,"
-    #         "com.amazonaws:aws-java-sdk-bundle:1.12.367,"
-    #         "io.delta:delta-core_2.12:2.4.0,"
-    #         "mysql:mysql-connector-java:8.0.33" # ใช้ในการอ่านค่าจาก MySQL database
-    #         ),
-    #     application_args=[
-    #         "--jdbc_url", cfg["database"]["jdbc_url"],
-    #         "--user", cfg["database"]["user"],
-    #         "--password", cfg["database"]["password"],
-    #         "--table", cfg["database"]["table"],
-    #         "--save_path", cfg["paths"]["airflow"]["raw"]["db_file"]["db_path"],
-    #         "--file_name", cfg["paths"]["airflow"]["raw"]["db_file"]["db_file_name"]],
-    #     verbose=True, # ให้แสดง log
-    #     retries=3, # ให้ retry 3 ครั้ง
-    #     retry_delay=timedelta(minutes=3) # ให้ delay 5 นาที ก่อน retry
-    # )   
+    extract_from_db = SparkSubmitOperator(
+        task_id="extract_from_db",
+        application= cfg["paths"]["airflow"]["spark_jobs"]["extract"]["extract_from_db"], # path ของ Spark job
+        conn_id="spark_default", # ชื่อ spark connection ที่เชือมกับ Airflow
+        conf= spark_conf,
+        packages=(""
+            "org.apache.hadoop:hadoop-aws:3.3.4,"
+            "com.amazonaws:aws-java-sdk-bundle:1.12.367,"
+            "io.delta:delta-core_2.12:2.4.0,"
+            "mysql:mysql-connector-java:8.0.33" # ใช้ในการอ่านค่าจาก MySQL database
+            ),
+        application_args=[
+            "--jdbc_url", cfg["database"]["jdbc_url"],
+            "--user", cfg["database"]["user"],
+            "--password", cfg["database"]["password"],
+            "--table", cfg["database"]["table"],
+            "--save_path", cfg["paths"]["airflow"]["raw"]["db_file"]["db_path"],
+            "--file_name", cfg["paths"]["airflow"]["raw"]["db_file"]["db_file_name"]],
+        verbose=True, # ให้แสดง log
+        retries=3, # ให้ retry 3 ครั้ง
+        retry_delay=timedelta(minutes=3) # ให้ delay 5 นาที ก่อน retry
+    )   
 
-    # db_clean = SparkSubmitOperator(
-    #     task_id="db_clean",
-    #     application= cfg["paths"]["airflow"]["spark_jobs"]["transform"]["data_clean"], # path ของ Spark job
-    #     conn_id="spark_default", # ชื่อ spark connection ที่เชือมกับ Airflow
-    #     conf=spark_conf,
-    #     packages="org.apache.hadoop:hadoop-aws:3.3.4,com.amazonaws:aws-java-sdk-bundle:1.12.367,io.delta:delta-core_2.12:2.4.0",
-    #     application_args=[
-    #         "--source", "data_from_db",
-    #         "--read_path", cfg["paths"]["airflow"]["raw"]["db_file"]["db_path"],
-    #         "--save_path", cfg["paths"]["airflow"]["processed"]["path"],
-    #         "--file_name", cfg["paths"]["airflow"]["raw"]["db_file"]["db_file_name"]],
-    #     verbose=True, # ให้แสดง log
-    #     execution_timeout=timedelta(minutes=30),
-    #     retries=3, # ให้ retry 3 ครั้ง
-    #     retry_delay=timedelta(minutes=3) # ให้ delay 5 นาที ก่อน retry
-    # )
+    db_clean = SparkSubmitOperator(
+        task_id="db_clean",
+        application= cfg["paths"]["airflow"]["spark_jobs"]["transform"]["data_clean"], # path ของ Spark job
+        conn_id="spark_default", # ชื่อ spark connection ที่เชือมกับ Airflow
+        conf=spark_conf,
+        packages="org.apache.hadoop:hadoop-aws:3.3.4,com.amazonaws:aws-java-sdk-bundle:1.12.367,io.delta:delta-core_2.12:2.4.0",
+        application_args=[
+            "--source", "data_from_db",
+            "--read_path", cfg["paths"]["airflow"]["raw"]["db_file"]["db_path"],
+            "--save_path", cfg["paths"]["airflow"]["processed"]["path"],
+            "--file_name", cfg["paths"]["airflow"]["raw"]["db_file"]["db_file_name"]],
+        verbose=True, # ให้แสดง log
+        execution_timeout=timedelta(minutes=30),
+        retries=3, # ให้ retry 3 ครั้ง
+        retry_delay=timedelta(minutes=3) # ให้ delay 5 นาที ก่อน retry
+    )
 
-    # api_clean = SparkSubmitOperator(
-    #     task_id="api_clean",
-    #     application= cfg["paths"]["airflow"]["spark_jobs"]["transform"]["data_clean"], # path ของ Spark job
-    #     conn_id="spark_default", # ชื่อ spark connection ที่เชือมกับ Airflow
-    #     conf=spark_conf,
-    #     packages="org.apache.hadoop:hadoop-aws:3.3.4,com.amazonaws:aws-java-sdk-bundle:1.12.367,io.delta:delta-core_2.12:2.4.0",
-    #     application_args=[
-    #         "--source", "data_from_api",
-    #         "--read_path", cfg["paths"]["airflow"]["raw"]["api_file"]["api_path"],
-    #         "--save_path", cfg["paths"]["airflow"]["processed"]["path"],
-    #         "--file_name", cfg["paths"]["airflow"]["raw"]["api_file"]["api_file_name"]],
-    #     verbose=True, # ให้แสดง log
-    #     execution_timeout=timedelta(minutes=30),
-    #     retries=3, # ให้ retry 3 ครั้ง
-    #     retry_delay=timedelta(minutes=3) # ให้ delay 5 นาที ก่อน retry
-    # )
+    api_clean = SparkSubmitOperator(
+        task_id="api_clean",
+        application= cfg["paths"]["airflow"]["spark_jobs"]["transform"]["data_clean"], # path ของ Spark job
+        conn_id="spark_default", # ชื่อ spark connection ที่เชือมกับ Airflow
+        conf=spark_conf,
+        packages="org.apache.hadoop:hadoop-aws:3.3.4,com.amazonaws:aws-java-sdk-bundle:1.12.367,io.delta:delta-core_2.12:2.4.0",
+        application_args=[
+            "--source", "data_from_api",
+            "--read_path", cfg["paths"]["airflow"]["raw"]["api_file"]["api_path"],
+            "--save_path", cfg["paths"]["airflow"]["processed"]["path"],
+            "--file_name", cfg["paths"]["airflow"]["raw"]["api_file"]["api_file_name"]],
+        verbose=True, # ให้แสดง log
+        execution_timeout=timedelta(minutes=30),
+        retries=3, # ให้ retry 3 ครั้ง
+        retry_delay=timedelta(minutes=3) # ให้ delay 5 นาที ก่อน retry
+    )
 
     
     join_table = SparkSubmitOperator(
@@ -118,142 +118,77 @@ with DAG(
     )
 
 
-    # data_handle_missing = SparkSubmitOperator(
-    #     task_id="handle_missing",
-    #     application= "/opt/airflow/dags/spark_jobs/transform/handle_missing.py",  # path ของ Spark job
-    #     conn_id="spark_default",  # ชื่อ spark connection ที่เชือมกับ Airflow
-    #     conf={ 
-    #           'spark.master': cfg["spark"]["master"],
-    #           'deploy-mode': 'cluster', # cluster job รันบน worker node ไม่ใช่ airflow , client จะรันตรงตัวที่ spark submit คือ airflow
-              
-    #           # Driver on SparkMaster
-    #           'spark.driver.memory': '2g',
-    #           'spark.driver.memoryOverhead': '512m',
-              
-    #           # Executor on SparkWorker
-    #           'spark.executor.memory': '3g',
-    #           'spark.executor.cores': '4',
-    #           'spark.executor.instances': '2', # จํานวน executor 2 ตัว
-    #           'spark.executor.memoryOverhead': '2g',
+    data_handle_missing = SparkSubmitOperator(
+        task_id="handle_missing",
+        application= cfg["paths"]["airflow"]["spark_jobs"]["transform"]["handle_missing"], # path ของ Spark job
+        conn_id="spark_default", # ชื่อ spark connection ที่เชือมกับ Airflow
+        conf=spark_conf,
+        packages="org.apache.hadoop:hadoop-aws:3.3.4,com.amazonaws:aws-java-sdk-bundle:1.12.367,io.delta:delta-core_2.12:2.4.0",
+        application_args=[
+            "--file_name",'join_table',
+            "--read_path", cfg["paths"]["airflow"]["processed"]['path'],
+            "--save_path", cfg["paths"]["airflow"]["processed"]["path"]],
+        verbose=True, # ให้แสดง log
+        execution_timeout=timedelta(minutes=30),
+        retries=3, # ให้ retry 3 ครั้ง
+        retry_delay=timedelta(minutes=3) # ให้ delay 5 นาที ก่อน retry
+    )
 
-    #           # ปรับ parallelism ให้เหมาะกับ core
-    #           'spark.sql.shuffle.partitions': '16',
-    #         },
-    #     jars=cfg["paths"]["airflow"]["spark_jars"],
-    #     application_args=[
-    #         "--file_name",'join_table',
-    #         "--read_path", cfg["paths"]["airflow"]["processed"]['path'],
-    #         "--save_path", cfg["paths"]["airflow"]["processed"]["path"]],
-    #     verbose=True, # ให้แสดง log
-    #     execution_timeout=timedelta(minutes=30),
-    #     retries=3, # ให้ retry 3 ครั้ง
-    #     retry_delay=timedelta(minutes=3) # ให้ delay 5 นาที ก่อน retry
-    # )
+
+    data_handle_missing_final = SparkSubmitOperator(
+        task_id="handle_missing_final",
+        application= cfg["paths"]["airflow"]["spark_jobs"]["transform"]["handle_missing_final"], # path ของ Spark job
+        conn_id="spark_default", # ชื่อ spark connection ที่เชือมกับ Airflow
+        conf=spark_conf,
+        packages="org.apache.hadoop:hadoop-aws:3.3.4,com.amazonaws:aws-java-sdk-bundle:1.12.367,io.delta:delta-core_2.12:2.4.0",
+        application_args=[
+            "--read_path", cfg["paths"]["airflow"]["processed"]['path'],
+            "--save_path", cfg["paths"]["airflow"]["processed"]["path"]],
+        verbose=True, # ให้แสดง log
+        execution_timeout=timedelta(minutes=30),
+        retries=3, # ให้ retry 3 ครั้ง
+        retry_delay=timedelta(minutes=3) # ให้ delay 5 นาที ก่อน retry
+    )
      
 
-
-    # data_handle_missing_final = SparkSubmitOperator(
-    #     task_id="handle_missing_final",
-    #     application= "/opt/airflow/dags/spark_jobs/transform/handle_missing_final.py",  # path ของ Spark job
-    #     conn_id="spark_default",  # ชื่อ spark connection ที่เชือมกับ Airflow
-    #     conf={ 
-    #           'spark.master': cfg["spark"]["master"],
-    #           'deploy-mode': 'cluster', # cluster job รันบน worker node ไม่ใช่ airflow , client จะรันตรงตัวที่ spark submit คือ airflow
-              
-    #           # Driver on SparkMaster
-    #           'spark.driver.memory': '2g',
-    #           'spark.driver.memoryOverhead': '512m',
-              
-    #           # Executor on SparkWorker
-    #           'spark.executor.memory': '3g',
-    #           'spark.executor.cores': '4',
-    #           'spark.executor.instances': '2', # จํานวน executor 2 ตัว
-    #           'spark.executor.memoryOverhead': '2g',
-
-    #           # ปรับ parallelism ให้เหมาะกับ core
-    #           'spark.sql.shuffle.partitions': '16',
-    #         },
-    #     jars=cfg["paths"]["airflow"]["spark_jars"],
-    #     application_args=[
-    #         "--read_path", cfg["paths"]["airflow"]["processed"]['path'],
-    #         "--save_path", cfg["paths"]["airflow"]["processed"]["path"]],
-    #     verbose=True, # ให้แสดง log
-    #     execution_timeout=timedelta(minutes=30),
-    #     retries=3, # ให้ retry 3 ครั้ง
-    #     retry_delay=timedelta(minutes=3) # ให้ delay 5 นาที ก่อน retry
-    # )
-     
-
-    # transform_data = SparkSubmitOperator(
-    #     task_id="transform_data",
-    #     application= "/opt/airflow/dags/spark_jobs/transform/transform.py",  # path ของ Spark job
-    #     conn_id="spark_default",  # ชื่อ spark connection ที่เชือมกับ Airflow
-    #     conf={ 
-    #           'spark.master': cfg["spark"]["master"],
-    #           'deploy-mode': 'cluster', # cluster job รันบน worker node ไม่ใช่ airflow , client จะรันตรงตัวที่ spark submit คือ airflow
-              
-    #           # Driver on SparkMaster
-    #           'spark.driver.memory': '2g',
-    #           'spark.driver.memoryOverhead': '512m',
-              
-    #           # Executor on SparkWorker
-    #           'spark.executor.memory': '3g',
-    #           'spark.executor.cores': '4',
-    #           'spark.executor.instances': '2', # จํานวน executor 2 ตัว
-    #           'spark.executor.memoryOverhead': '2g',
-
-    #           # ปรับ parallelism ให้เหมาะกับ core
-    #           'spark.sql.shuffle.partitions': '16',
-    #         },
-    #     jars=cfg["paths"]["airflow"]["spark_jars"],
-    #     application_args=[
-    #         "--read_path", cfg["paths"]["airflow"]["processed"]['path'],
-    #         "--save_path", cfg["paths"]["airflow"]["processed"]["path"]],
-    #     verbose=True, # ให้แสดง log
-    #     execution_timeout=timedelta(minutes=30),
-    #     retries=3, # ให้ retry 3 ครั้ง
-    #     retry_delay=timedelta(minutes=3) # ให้ delay 5 นาที ก่อน retry
-    # )
+    transform_data = SparkSubmitOperator(
+        task_id="transform_data",
+        application= cfg["paths"]["airflow"]["spark_jobs"]["transform"]["transform"], # path ของ Spark job
+        conn_id="spark_default", # ชื่อ spark connection ที่เชือมกับ Airflow
+        conf=spark_conf,
+        packages="org.apache.hadoop:hadoop-aws:3.3.4,com.amazonaws:aws-java-sdk-bundle:1.12.367,io.delta:delta-core_2.12:2.4.0",
+        application_args=[
+            "--read_path", cfg["paths"]["airflow"]["processed"]['path'],
+            "--save_path", cfg["paths"]["airflow"]["processed"]["path"]],
+        verbose=True, # ให้แสดง log
+        execution_timeout=timedelta(minutes=30),
+        retries=3, # ให้ retry 3 ครั้ง
+        retry_delay=timedelta(minutes=3) # ให้ delay 5 นาที ก่อน retry
+    )
 
     
-    # load_data = SparkSubmitOperator(
-    #     task_id="load_data",
-    #     application= "/opt/airflow/dags/spark_jobs/load/load_data.py",  # path ของ Spark job
-    #     conn_id="spark_default",  # ชื่อ spark connection ที่เชือมกับ Airflow
-    #     conf={ 
-    #           'spark.master': cfg["spark"]["master"],
-    #           'deploy-mode': 'cluster', # cluster job รันบน worker node ไม่ใช่ airflow , client จะรันตรงตัวที่ spark submit คือ airflow
-              
-    #           # Driver on SparkMaster
-    #           'spark.driver.memory': '2g',
-    #           'spark.driver.memoryOverhead': '512m',
-              
-    #           # Executor on SparkWorker
-    #           'spark.executor.memory': '3g',
-    #           'spark.executor.cores': '4',
-    #           'spark.executor.instances': '2', # จํานวน executor 2 ตัว
-    #           'spark.executor.memoryOverhead': '2g',
+    load_data = SparkSubmitOperator(
+        task_id="load_data",
+        application= cfg["paths"]["airflow"]["spark_jobs"]["load"]["load_data"], # path ของ Spark job
+        conn_id="spark_default", # ชื่อ spark connection ที่เชือมกับ Airflow
+        conf=spark_conf,
+        packages="org.apache.hadoop:hadoop-aws:3.3.4,com.amazonaws:aws-java-sdk-bundle:1.12.367,io.delta:delta-core_2.12:2.4.0",
+        application_args=[
+            "--read_path", cfg["paths"]["airflow"]["processed"]['path'],
+            "--save_path", cfg["paths"]["airflow"]["output"]["path"]],
+        verbose=True, # ให้แสดง log
+        execution_timeout=timedelta(minutes=30),
+        retries=3, # ให้ retry 3 ครั้ง
+        retry_delay=timedelta(minutes=3) # ให้ delay 5 นาที ก่อน retry
+    )
 
-    #           # ปรับ parallelism ให้เหมาะกับ core
-    #           'spark.sql.shuffle.partitions': '8',
-    #         },
-    #     jars=cfg["paths"]["airflow"]["spark_jars"],
-    #     application_args=[
-    #         "--read_path", cfg["paths"]["airflow"]["processed"]['path'],
-    #         "--save_path", cfg["paths"]["airflow"]["output"]["path"]],
-    #     verbose=True, # ให้แสดง log
-    #     execution_timeout=timedelta(minutes=30),
-    #     retries=3, # ให้ retry 3 ครั้ง
-    #     retry_delay=timedelta(minutes=3) # ให้ delay 5 นาที ก่อน retry
-    # )
+    # กําหนด dependency ของ task
 
-    # # กําหนด dependency ของ task
-
-    # extract_from_db >> db_clean
-    # extract_from_api >> api_clean
+    extract_from_db >> db_clean
+    extract_from_api >> api_clean
     
-    # [db_clean, api_clean] >> join_table
+    [db_clean, api_clean] >> join_table
     
-    # join_table >> data_handle_missing  >> data_handle_missing_final >> transform_data >> load_data
+    join_table >> data_handle_missing  >> data_handle_missing_final >> transform_data >> load_data
  
 

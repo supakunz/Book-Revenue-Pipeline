@@ -1,7 +1,7 @@
 import argparse
 from pyspark.sql import SparkSession, DataFrame
-from dags.spark_jobs.transform.data_clean_utils import remove_invalid_rows
-from dags.spark_jobs.transform.eda_utils import remove_outliers
+from plugins.spark_helpers.utils.data_clean_utils import remove_invalid_rows
+from plugins.spark_helpers.utils.eda_utils import remove_outliers
 import logging
 
 # ตั้งค่า logging เพื่อบันทึกข้อผิดพลาด
@@ -18,11 +18,10 @@ def handle_missing_final(read_path: str, save_path: str) -> DataFrame:
 
         df = remove_invalid_rows(df)
         df = remove_outliers(df)
+        logging.info("Missing and Outlier values handled successfully.")
         
+        # แสดง Schema
         df.printSchema()
-
-        # แบ่งงานเป็น 16 task
-        df = df.repartition(16)
 
         # save ลงไฟล์
         df.write.mode("overwrite").parquet(f"{save_path}/handle_missing_final")
