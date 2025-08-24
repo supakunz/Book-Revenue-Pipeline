@@ -63,55 +63,39 @@ with DAG(
     #     retry_delay=timedelta(minutes=3) # ให้ delay 5 นาที ก่อน retry
     # )   
 
-    db_clean = SparkSubmitOperator(
-        task_id="db_clean",
-        application= cfg["paths"]["airflow"]["spark_jobs"]["transform"]["data_clean"], # path ของ Spark job
-        conn_id="spark_default", # ชื่อ spark connection ที่เชือมกับ Airflow
-        conf=spark_conf,
-        packages="org.apache.hadoop:hadoop-aws:3.3.4,com.amazonaws:aws-java-sdk-bundle:1.12.367,io.delta:delta-core_2.12:2.4.0",
-        application_args=[
-            "--source", "data_from_db",
-            "--read_path", cfg["paths"]["airflow"]["raw"]["db_file"]["db_path"],
-            "--save_path", cfg["paths"]["airflow"]["processed"]["path"],
-            "--file_name", cfg["paths"]["airflow"]["raw"]["db_file"]["db_file_name"]],
-        verbose=True, # ให้แสดง log
-        execution_timeout=timedelta(minutes=30),
-        retries=3, # ให้ retry 3 ครั้ง
-        retry_delay=timedelta(minutes=3) # ให้ delay 5 นาที ก่อน retry
-    )
-
-    # api_clean = SparkSubmitOperator(
-    #     task_id="api_clean",
-    #     application= cfg["paths"]["airflow"]["spark_jobs"]["transform"]["data_clean"],  # path ของ Spark job
-    #     conn_id="spark_default",  # ชื่อ spark connection ที่เชือมกับ Airflow
-    #     conf={ 
-    #           'spark.master': cfg["spark"]["master"],
-    #           'deploy-mode': 'cluster', # cluster job รันบน worker node ไม่ใช่ airflow , client จะรันตรงตัวที่ spark submit คือ airflow
-              
-    #           # Driver on SparkMaster
-    #           'spark.driver.memory': '2g',
-    #           'spark.driver.memoryOverhead': '512m',
-              
-    #           # Executor on SparkWorker
-    #           'spark.executor.memory': '3g',
-    #           'spark.executor.cores': '4',
-    #           'spark.executor.instances': '2', # จํานวน executor 2 ตัว
-    #           'spark.executor.memoryOverhead': '2g',
-
-    #           # ปรับ parallelism ให้เหมาะกับ core
-    #           'spark.sql.shuffle.partitions': '16',
-    #         },
-    #     jars=cfg["paths"]["airflow"]["spark_jars"],
+    # db_clean = SparkSubmitOperator(
+    #     task_id="db_clean",
+    #     application= cfg["paths"]["airflow"]["spark_jobs"]["transform"]["data_clean"], # path ของ Spark job
+    #     conn_id="spark_default", # ชื่อ spark connection ที่เชือมกับ Airflow
+    #     conf=spark_conf,
+    #     packages="org.apache.hadoop:hadoop-aws:3.3.4,com.amazonaws:aws-java-sdk-bundle:1.12.367,io.delta:delta-core_2.12:2.4.0",
     #     application_args=[
-    #         "--source", "data_from_api",
-    #         "--read_path", cfg["paths"]["airflow"]["raw"]["api_file"]["api_path"],
+    #         "--source", "data_from_db",
+    #         "--read_path", cfg["paths"]["airflow"]["raw"]["db_file"]["db_path"],
     #         "--save_path", cfg["paths"]["airflow"]["processed"]["path"],
-    #         "--file_name", cfg["paths"]["airflow"]["raw"]["api_file"]["api_file_name"]],
+    #         "--file_name", cfg["paths"]["airflow"]["raw"]["db_file"]["db_file_name"]],
     #     verbose=True, # ให้แสดง log
     #     execution_timeout=timedelta(minutes=30),
     #     retries=3, # ให้ retry 3 ครั้ง
     #     retry_delay=timedelta(minutes=3) # ให้ delay 5 นาที ก่อน retry
     # )
+
+    api_clean = SparkSubmitOperator(
+        task_id="api_clean",
+        application= cfg["paths"]["airflow"]["spark_jobs"]["transform"]["data_clean"], # path ของ Spark job
+        conn_id="spark_default", # ชื่อ spark connection ที่เชือมกับ Airflow
+        conf=spark_conf,
+        packages="org.apache.hadoop:hadoop-aws:3.3.4,com.amazonaws:aws-java-sdk-bundle:1.12.367,io.delta:delta-core_2.12:2.4.0",
+        application_args=[
+            "--source", "data_from_api",
+            "--read_path", cfg["paths"]["airflow"]["raw"]["api_file"]["api_path"],
+            "--save_path", cfg["paths"]["airflow"]["processed"]["path"],
+            "--file_name", cfg["paths"]["airflow"]["raw"]["api_file"]["api_file_name"]],
+        verbose=True, # ให้แสดง log
+        execution_timeout=timedelta(minutes=30),
+        retries=3, # ให้ retry 3 ครั้ง
+        retry_delay=timedelta(minutes=3) # ให้ delay 5 นาที ก่อน retry
+    )
 
     
     # join_table = SparkSubmitOperator(

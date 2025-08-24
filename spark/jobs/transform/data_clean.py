@@ -20,7 +20,7 @@ def clean_data(source: str, read_path: str, save_path: str, file_name: str):
             logging.info("Data loaded from the database successfully.")
         elif source == "data_from_api":
             # อ่านข้อมูล API เป็น Parquet
-            df = spark.read.json(f"{read_path}/{file_name}.json")
+            df = spark.read.json(f"{read_path}/{file_name}")
             logging.info("Data loaded from the API successfully.")
         
         # ทําการ clean ข้อมูลเบื้องต้น
