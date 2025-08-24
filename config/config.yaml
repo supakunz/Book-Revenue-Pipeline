@@ -1,0 +1,36 @@
+paths:
+  airflow:
+    raw:
+      api_file:
+        api_file_name: "conversion_rates"
+        api_path: "s3a://data-lake/raw/api"
+      db_file:
+        db_file_name: "raw_audible"
+        db_path: "s3a://data-lake/raw/database"
+    processed:
+      file_name:
+        db_file_name: "data_from_db"
+        api_file_name: "data_from_api"
+      path: "s3a://data-lake/processed"
+    output:
+      path: "s3a://data-lake/output"
+    spark_jobs:
+      extract:
+        extract_from_api: "/opt/spark/jobs/extract/extract_from_api.py"
+        extract_from_db: "/opt/spark/jobs/extract/extract_from_db.py"
+      transform:
+        data_clean: "/opt/spark/jobs/transform/data_clean.py"
+        join_table: "/opt/spark/jobs/transform/join_table.py"
+
+api:
+  local:
+    url: "http://localhost:3000/conversion_rates"
+  airflow:
+    url: "http://json-server:3000/conversion_rates"
+
+database:
+  jdbc_url: "jdbc:mysql://mysql:3306/airflow_db"
+  driver: "com.mysql.cj.jdbc.Driver"
+  table: "data_audible"
+  user: "airflow"
+  password: "airflow"

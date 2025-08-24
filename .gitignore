@@ -1,0 +1,11 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Logs and dags
+logs/**
+
+# Raw data
+/initdb/raw_data.csv
