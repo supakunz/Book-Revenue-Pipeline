@@ -28,10 +28,10 @@ def join_table(db_file_name: str ,db_path: str, api_file_name: str, api_path: st
         filename = f"{save_path}/join_table"
         
         # # แบ่งงานหลาย task ลด memory ต่อ executor
-        df = joined_df.repartition(16)
+        # df = joined_df.repartition(16)
         
         # # บันทึกลงไฟล์แบบ Parquet
-        df.write.mode("overwrite").parquet(filename)
+        joined_df.write.mode("overwrite").parquet(filename)
         logging.info(f"Data saved to {filename} successfully.")
     
     except Exception as e:
