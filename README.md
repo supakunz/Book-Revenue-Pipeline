@@ -37,6 +37,14 @@ It covers orchestration (Airflow), distributed processing (Spark), cloud storage
 - `spark-master`, `spark-worker`
 - `mysql`, `phpmyadmin`, `json-server`, etc.
 
+## 💾 Object Storage (MinIO)
+
+<img width="1191" height="836" alt="Image" src="https://github.com/user-attachments/assets/4a8b9b4b-a853-4eec-9aed-2fd9a0ab6405" />
+
+- Uses **MinIO** as an S3-compatible object storage.
+- All raw, processed, and output data from the pipeline is stored here before being loaded into the data warehouse.
+- The `data-lake` bucket is the primary storage location for this project.
+
 ## ⚡ Spark Cluster (Master/Workers)
 
 <img width="1920" height="995" alt="Image" src="https://github.com/user-attachments/assets/ad97e266-ba42-4ac3-98d7-2939df45a031" />
