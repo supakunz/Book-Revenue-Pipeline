@@ -23,6 +23,7 @@ It covers orchestration (Airflow), distributed processing (Spark), cloud storage
 
 **Infrastructure & Cloud Platform :**
 - Docker
+- MinIO (S3)
 - BigQuery
 
 **Visualization :**
@@ -36,6 +37,15 @@ It covers orchestration (Airflow), distributed processing (Spark), cloud storage
 - `airflow-webserver`, `airflow-scheduler`
 - `spark-master`, `spark-worker`
 - `mysql`, `phpmyadmin`, `json-server`, etc.
+
+## 💾 Data Lake Storage (MinIO)
+
+<img width="1191" height="836" alt="Image" src="https://github.com/user-attachments/assets/4a8b9b4b-a853-4eec-9aed-2fd9a0ab6405" />
+
+**Bucket Structure :**
+- Uses **MinIO** as an S3-compatible object storage.
+- All raw, processed, and output data from the pipeline is stored here before being loaded into the data warehouse.
+- The `data-lake` bucket is the primary storage location for this project.
 
 ## ⚡ Spark Cluster (Master/Workers)
 
