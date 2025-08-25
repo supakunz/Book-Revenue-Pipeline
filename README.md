@@ -1,12 +1,12 @@
 
-# 📘 Book Sales End-To-End Data Engineering Project on Google Cloud Platform
+# 📘 Book Sales End-To-End Data Engineering Project
 
-> End-to-end data engineering project using Docker, Airflow, Spark, BigQuery and Looker Studio on Google Cloud Platform (GCP)
+> End-to-end data engineering project using Docker, Airflow, Spark, MinIO(S3), BigQuery and Looker Studio
 
 ## 🧾 Project Overview
 
 This project demonstrates a complete modern data pipeline from raw ingestion to BI dashboard.  
-It covers orchestration (Airflow), distributed processing (Spark), cloud storage/warehouse (GCS & BigQuery) and visualization (Looker Studio).
+It covers orchestration (Airflow), distributed processing (Spark), cloud storage/warehouse (MinIO(S3) & BigQuery) and visualization (Looker Studio).
 
 ## ⚙️ Architecture Diagram
 ![Arch_Diagram](images/Architecture_Diagram.png)
