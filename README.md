@@ -60,6 +60,7 @@ This cluster runs in standalone mode with :
 
 ### 1. MySQL Tables
 <img width="1907" height="995" alt="Image" src="https://github.com/user-attachments/assets/90299f12-7938-4328-86a6-957654183ac8" />
+![MySQL Tables](images/mysql_raw_data.png)
 
 - `data_audible` : raw book sales data (user_id, country, price, rating, etc.)
 - Data too large to include in repo.
