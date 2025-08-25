@@ -152,11 +152,11 @@ MINIO_API_PORT=9000
 MINIO_CONSOLE_PORT=9001
 MYSQL_PORT=3306
 ```
-3. Download the raw data from [Google Drive Link](https://drive.google.com/...)
+3. Download the raw data from [Google Drive Link](https://drive.google.com/...) :
 
-- Extract or move the files into the initdb/ folder inside the project directory.
+    - Extract or move the files into the initdb/ folder inside the project directory.
 
-- This data will be automatically loaded into the pipeline when the containers start.
+    - This data will be automatically loaded into the pipeline when the containers start.
 
 4. Start the services :
 ```bash
