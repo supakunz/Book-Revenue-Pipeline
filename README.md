@@ -9,7 +9,7 @@ This project demonstrates a complete modern data pipeline from raw ingestion to 
 It covers orchestration (Airflow), distributed processing (Spark), cloud storage/warehouse (GCS & BigQuery) and visualization (Looker Studio).
 
 ## ⚙️ Architecture Diagram
-<img width="735" height="728" alt="Project Architecture" src="https://github.com/user-attachments/assets/e8006f93-541d-4606-a744-0d414731accb" />
+![Arch_Diagram](images/Architecture_Diagram.png)
 
 ## 💡 Technology Stack
 
@@ -31,7 +31,7 @@ It covers orchestration (Airflow), distributed processing (Spark), cloud storage
 
 ## 🐳 Docker / Infrastructure Setup
 
-<img width="1191" height="836" alt="Image" src="https://github.com/user-attachments/assets/4a8b9b4b-a853-4eec-9aed-2fd9a0ab6405" />
+![Docker_Setup](images/Docker_Service.png)
 
 **Services included :**
 - `airflow-webserver`, `airflow-scheduler`
@@ -40,7 +40,7 @@ It covers orchestration (Airflow), distributed processing (Spark), cloud storage
 
 ## 💾 Data Lake Storage (MinIO)
 
-<img width="1191" height="836" alt="Image" src="https://github.com/user-attachments/assets/4a8b9b4b-a853-4eec-9aed-2fd9a0ab6405" />
+![Minio_Storage](images/minio_processed_data.png)
 
 **Bucket Structure :**
 - Uses **MinIO** as an S3-compatible object storage.
@@ -49,9 +49,9 @@ It covers orchestration (Airflow), distributed processing (Spark), cloud storage
 
 ## ⚡ Spark Cluster (Master/Workers)
 
-<img width="1920" height="995" alt="Image" src="https://github.com/user-attachments/assets/ad97e266-ba42-4ac3-98d7-2939df45a031" />
+![Spark_Cluster](images/Spark_Cluster.png)
 
-This cluster runs in standalone mode with :
+**This cluster runs in standalone mode with :**
 - 1 Spark Master
 - 1 Spark Workers
 - Deployed inside Docker containers
@@ -59,8 +59,7 @@ This cluster runs in standalone mode with :
 ## 📂 Raw Database
 
 ### 1. MySQL Tables
-<img width="1907" height="995" alt="Image" src="https://github.com/user-attachments/assets/90299f12-7938-4328-86a6-957654183ac8" />
-![MySQL Tables](images/mysql_raw_data.png)
+![MySQL_Raw Table](images/mysql_raw_data.png)
 
 - `data_audible` : raw book sales data (user_id, country, price, rating, etc.)
 - Data too large to include in repo.
@@ -81,10 +80,10 @@ This cluster runs in standalone mode with :
 - File is included in repo at (server/conversion_rate.json).
 
 ## 🧾 Data Flow Diagram
-<img width="1358" height="748" alt="Image" src="https://github.com/user-attachments/assets/10d9a52e-44a7-470d-9398-616d9b1371ff" />
+![Workflow_Diagram](images/Workflow_Diagram.png)
 
 ## 🔄 ETL Workflow Diagram
-<img width="1907" height="685" alt="Image" src="https://github.com/user-attachments/assets/36d07150-1e52-48e6-a22d-3b5818cac405" />
+![ETL_Diagram](images/ETL_Diagram.png)
 
 #### Spark ETL Components / Airflow Tasks
 
@@ -110,24 +109,58 @@ This cluster runs in standalone mode with :
 1. Clone this repository :
 
 ```bash
-git clone https://github.com/supakunz/Book-Revenue-Pipeline-GCP.git
+git clone https://github.com/supakunz/Book-Revenue-Pipeline.git
 ```
 
 2. Navigate to the project folder and Set up the environment variables :
 
 ```
-cd Book-Revenue-Pipeline-GCP
+cd Book-Revenue-Pipeline
 ```
 - Create a `.env` file in the root directory.
 
 - Add the following variables to the .env file, replacing the placeholder values with your own:
 
 ```
-MYSQL_CONNECTION = mysql_default #file name in Data Storage --> <data_audible_data_merged.csv>
-CONVERSION_RATE_URL = <your_api_url> #file name in Data Storage --> <data_conversion_rate.csv>
-MYSQL_OUTPUT_PATH = /home/airflow/gcs/data/audible_data_merged.csv
-CONVERSION_RATE_OUTPUT_PATH = /home/airflow/gcs/data/conversion_rate.csv
-FINAL_OUTPUT_PATH = /home/airflow/gcs/data/output.csv
+# Airflow Configuration
+AIRFLOW_UID=1000
+_AIRFLOW_WWW_USER_USERNAME=airflow
+_AIRFLOW_WWW_USER_PASSWORD=airflow123
+
+# MySQL Database
+MYSQL_ROOT_PASSWORD=rootpassword
+MYSQL_DATABASE=airflow
+MYSQL_USER=airflow
+MYSQL_PASSWORD=airflow
+
+# MinIO
+MINIO_ROOT_USER=minioadmin
+MINIO_ROOT_PASSWORD=minioadmin
+
+# Jupyter
+JUPYTER_TOKEN=
+JUPYTER_PORT=8888
+
+# Network
+COMPOSE_PROJECT_NAME=data-engineering
+
+# Additional Ports
+PHPMYADMIN_PORT=8082
+AIRFLOW_WEBSERVER_PORT=8080
+SPARK_MASTER_UI_PORT=8081
+MINIO_API_PORT=9000
+MINIO_CONSOLE_PORT=9001
+MYSQL_PORT=3306
+```
+3. Download the raw data from [Google Drive Link](https://drive.google.com/...)
+
+- Extract or move the files into the initdb/ folder inside the project directory.
+
+- This data will be automatically loaded into the pipeline when the containers start.
+
+4. Start the services :
+```bash
+docker compose up -d
 ```
 
 ## 🙋‍♂️ Contact
