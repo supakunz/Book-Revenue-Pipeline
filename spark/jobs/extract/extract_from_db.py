@@ -13,7 +13,7 @@ def extract_from_db(jdbc_url:str, user:str, password:str ,table:str, save_path:s
       logging.info("Spark session created successfully.")
 
       # สร้างคําสั่ง SQL
-      sql_query = f"(SELECT * FROM {table} LIMIT 1000) AS subquery_data" # ต้องมี AS ตามด้วยชื่อ alias ที่คุณตั้งขึ้นมา Spark จะได้ไม่เกิดข้อผิดพลาด 
+      sql_query = f"(SELECT * FROM {table} LIMIT 800000) AS subquery_data" # ต้องมี AS ตามด้วยชื่อ alias ที่คุณตั้งขึ้นมา Spark จะได้ไม่เกิดข้อผิดพลาด 
 
       # อ่านข้อมูลจาก database โดยใช้ JDBC connection
       df = spark.read.format("jdbc") \

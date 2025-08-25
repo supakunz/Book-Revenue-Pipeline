@@ -35,7 +35,7 @@ with DAG(
             "--file_name", cfg["paths"]["airflow"]["raw"]["api_file"]["api_file_name"]
     ],
         verbose=True, # ให้แสดง log
-        execution_timeout=timedelta(minutes=60),
+        execution_timeout=timedelta(minutes=40),
         retries=3, # ให้ retry 3 ครั้ง
         retry_delay=timedelta(minutes=3) # ให้ delay 3 นาที ก่อน retry
     )
@@ -59,6 +59,7 @@ with DAG(
             "--save_path", cfg["paths"]["airflow"]["raw"]["db_file"]["db_path"],
             "--file_name", cfg["paths"]["airflow"]["raw"]["db_file"]["db_file_name"]],
         verbose=True, # ให้แสดง log
+        execution_timeout=timedelta(minutes=40),
         retries=3, # ให้ retry 3 ครั้ง
         retry_delay=timedelta(minutes=3) # ให้ delay 5 นาที ก่อน retry
     )   
